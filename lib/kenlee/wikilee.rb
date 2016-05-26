@@ -65,13 +65,13 @@ module KenLee
     def fetch_extracts
       json = get_data_json('extracts', { 'exlimit' => MAX_PAGE_LIMIT, 'exintro' => nil, 'explaintext' => nil })
 
-      @rnc = (json.has_key? "continue") ? json["continue"]["grncontinue"] : nil
-      if json.has_key? "query"
-        json["query"]["pages"].values.each do |page|
-          @extracts.push(page["extract"])
+      @rnc = (json.has_key? 'continue') ? json['continue']['grncontinue'] : nil
+      if json.has_key? 'query'
+        json['query']['pages'].values.each do |page|
+          @extracts.push(page['extract'])
         end
       else
-        raise Exception, ""
+        raise Exception, 'Invalid JSON received from Wikimedia API'
       end
     end
 
@@ -85,21 +85,21 @@ module KenLee
     def fetch_links
       prop_params = { 'ellimit' => MAX_PAGE_LIMIT }
       unless @links_continue.nil?
-        prop_params["eloffset"] = @links_continue
+        prop_params['eloffset'] = @links_continue
       end
       json = get_data_json('extlinks', prop_params)
 
-      @links_continue = (json.has_key? "continue") ? json["continue"]["eloffset"] : nil
-      if json.has_key? "query"
-        json["query"]["pages"].values.each do |page|
-          if page.has_key? "extlinks"
-            page["extlinks"].each do |link_map|
-              @links.push(link_map["*"])
+      @links_continue = (json.has_key? 'continue') ? json['continue']['eloffset'] : nil
+      if json.has_key? 'query'
+        json['query']['pages'].values.each do |page|
+          if page.has_key? 'extlinks'
+            page['extlinks'].each do |link_map|
+              @links.push(link_map['*'])
             end
           end
         end
       else
-        raise Exception # TODO
+        raise Exception, 'Invalid JSON received from Wikimedia API'
       end
     end
 
