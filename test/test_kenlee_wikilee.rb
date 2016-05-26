@@ -11,12 +11,24 @@ class TestKenLeeWikiLee < Test::Unit::TestCase
   end
 
   def test_paragraph
-    puts @wl.paragraph
-    assert @wl.paragraph.present?
+    paragraph = @wl.paragraph
+    assert_paragraph(paragraph)
   end
 
   def test_paragraphs
-    puts @wl.paragraphs(15)
+    paragraphs = @wl.paragraphs(15)
+    assert !paragraphs.nil?
+    assert paragraphs.is_a? Array
+    paragraphs.each do |paragraph|
+      assert_paragraph(paragraph)
+    end
+  end
+
+  private
+
+  def assert_paragraph(paragraph)
+    assert !paragraph.nil?
+    assert paragraph.is_a? String
   end
 
 end

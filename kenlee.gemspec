@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/Ducz0r/kenlee'
   s.license     = 'MIT'
 
-  s.add_dependency('curb', '>= 0.9.1')
+  s.add_dependency('curb', '>= 0.9.3')
 
   s.files         = Dir['lib/**/*'] + %w(LICENSE.txt README.md)
   s.test_files    = Dir['test/**/*']

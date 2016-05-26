@@ -1,5 +1,8 @@
 module KenLee
   class WikiLee < Base
+    require 'curb'
+    require 'json'
+
     MAX_PAGE_LIMIT = 10
     ENDPOINT_PREFIX = 'https://{{lang}}.wikipedia.org/w/api.php'
     INTRO_TEMPLATE =
@@ -10,7 +13,7 @@ module KenLee
     attr_reader :endpoint
 
     def initialize(lang = :en)
-      @endpoint = ENDPOINT_PREFIX.gsub("{{lang}}", lang.to_s)
+      @endpoint = ENDPOINT_PREFIX.gsub('{{lang}}', lang.to_s)
       @rnc = nil
       @paragraphs = []
     end
@@ -20,9 +23,7 @@ module KenLee
     end
 
     def paragraphs(nr = 10)
-      result = []
-      (1..nr).each { result << fetch_paragraph }
-      result
+      (1..nr).collect { fetch_paragraph }
     end
 
     private
@@ -36,11 +37,20 @@ module KenLee
 
     def query_paragraphs
       url = INTRO_TEMPLATE
-        .gsub("{{ep}}", @endpoint)
-        .gsub("{{rnc}}", @rnc.nil? ? "grncontinue=#{@rnc}" : '')
-        .gsub("{{limit}}", MAX_PAGE_LIMIT)
+      url = url.gsub('{{ep}}', @endpoint)
+      url = url.gsub('{{rnc}}', @rnc.nil? ? '' : "grncontinue=#{@rnc}")
+      url = url.gsub('{{limit}}', "#{MAX_PAGE_LIMIT}")
       http = Curl.get(url)
-      puts http.body_str
+      json = JSON.parse(http.body_str)
+
+      @rnc = (json.has_key? "continue") ? json["continue"]["grncontinue"] : nil
+      if json.has_key? "query"
+        json["query"]["pages"].values.each do |page|
+          @paragraphs.push(page["extract"])
+        end
+      else
+        raise Exception # TODO
+      end
     end
 
   end
