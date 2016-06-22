@@ -22,7 +22,7 @@ gem install ./kenlee-x.y.z.gem
 ```
 5. Now, you can require the Gem from your application!
 ```ruby
-require "kenlee"
+require 'kenlee'
 ```
 
 ## KenLee submodules
