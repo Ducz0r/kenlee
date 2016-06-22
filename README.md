@@ -4,14 +4,34 @@
 
 ## What is KenLee?
 
-**KenLee** is a Ruby Gem that aims to generate *random*/*fake* data by using various web service APIs.
+**KenLee** is a Ruby Gem that aims to generate *random* data by using various web service APIs. This is a different strategy than what most random/fake data generators (e.g. [Faker](https://github.com/stympy/faker)) employ.
 
 ## How to use KenLee?
 
+Firstly, you need to include the Gem in your application. Since the Gem is not yet available on [RubyGems](https://rubygems.org/), the easiest option is to do the following:
+
+1. Clone this Git repository somewhere onto your drive.
+2. Navigate to the Gem folder and execute:
+```ruby
+gem build kenlee.gemspec
+```
+3. This will build you a `kenlee-x.y.z.gem` Gem file.
+4. You can now install the Gem:
+```ruby
+gem install ./kenlee-x.y.z.gem
+```
+5. Now, you can require the Gem from your application!
+```ruby
+require "kenlee"
+```
+
+## KenLee submodules
+
 Currently, only one submodule for KenLee exists.
 
-*KenLee* submodules:
-* WikiLee.
+| **Submodule** | **Description**                      |
+|---------------|--------------------------------------|
+| WikiLee       | Fetches random Wikipedia pages data. |
 
 ### WikiLee
 
